@@ -40,7 +40,7 @@ class GroupMember(Agent):
 
 class Community(Model):
     """A model with some number of agents."""
-    def __init__(self, N):
+    def __init__(self, N, topics):
         self.schedule = RandomActivation(self)
 
 
@@ -49,8 +49,9 @@ class Community(Model):
         # Group is initialized with 30 messages
         self.totalMessages = 30
         
+        self.topics = topics
         
-        
+        print(self.topics)
         # Create agents
         for i in range(self.num_agents):
             a = GroupMember(i, self)
