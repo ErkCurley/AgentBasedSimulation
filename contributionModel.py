@@ -36,8 +36,10 @@ class GroupMember(Agent):
             # if Community.total_messages < 100:
             print("Increase information sharing benefit")
 
-class Message(topic):
-    self.topic = topic
+class Message():
+    def __init__(self,topic):
+        self.topic = topic
+        print(self.topic)
 
 
 
@@ -53,9 +55,8 @@ class Community(Model):
         self.totalMessages = 30
         self.messages = []
 
-        for x in range(totalMessages):
-            messages.append(Message(random.choice(potential_topics)))
-
+        for x in range(self.totalMessages):
+            self.messages.append(Message(random.choice(potential_topics)))
 
         self.topics = topics
         # Create agents
