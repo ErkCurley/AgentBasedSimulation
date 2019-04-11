@@ -7,7 +7,12 @@ class GroupMember(Agent):
     """ An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
-        self.wealth = 10
+        self.InfoB_access
+        self.InfoB_share
+        self.SocialB_identity
+        self.SocailB_bond
+        self.IntrinsicB_recreation
+        self.IntrinsicB_reputation
 
     def step(self):
         # The agent's step will go here.
