@@ -3,6 +3,8 @@ from mesa import Agent, Model
 from mesa.time import RandomActivation
 import random
 
+potential_topics = ["A","B","C","D","E","F","G","H","I"]
+
 class GroupMember(Agent):
     """ An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
@@ -34,7 +36,8 @@ class GroupMember(Agent):
             # if Community.total_messages < 100:
             print("Increase information sharing benefit")
 
-
+class Message(topic):
+    self.topic = topic
 
 
 
@@ -48,10 +51,13 @@ class Community(Model):
         self.num_agents = 30
         # Group is initialized with 30 messages
         self.totalMessages = 30
-        
+        self.messages = []
+
+        for x in range(totalMessages):
+            messages.append(Message(random.choice(potential_topics)))
+
+
         self.topics = topics
-        
-        print(self.topics)
         # Create agents
         for i in range(self.num_agents):
             a = GroupMember(i, self)
