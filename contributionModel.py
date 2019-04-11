@@ -39,7 +39,6 @@ class GroupMember(Agent):
 class Message():
     def __init__(self,topic):
         self.topic = topic
-        print(self.topic)
 
 
 
