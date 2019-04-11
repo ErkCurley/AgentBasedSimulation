@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 
 
 number_of_agents = 100
+number_of_days = 365
 model = Community(number_of_agents)
-for i in range(number_of_agents):
+for i in range(number_of_days):
     model.step()
 
 #     # Store the results
