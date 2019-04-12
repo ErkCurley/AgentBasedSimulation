@@ -73,17 +73,12 @@ class Community(Model):
     def step(self):
         '''Advance the model by one step.'''
         for a in self.schedule.agents:
-            countG = 0
-            countB = 0
             for x in self.messages:
-                countB = countB + 1
                 a.InfoB_access = a.InfoB_access - .1
                 if x.topic in a.topic_interests:
-                    countG = countG + 1
                     a.InfoB_access = a.InfoB_access + 1
                 else:
                     a.InfoB_access = a.InfoB_access - .5
 
-            print(int(a.InfoB_access))
-
+        print(a.InfoB_access)
         self.schedule.step()

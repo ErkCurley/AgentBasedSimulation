@@ -25,8 +25,10 @@ for i in range(number_of_days):
 # Store the results
 Info_Benefit = []
 for agent in model.schedule.agents:
-    InfoB_access = math.floor(agent.InfoB_access * 10)
+    InfoB_access = int(agent.InfoB_access)
     Info_Benefit.append(InfoB_access)
 
-plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
+print(Info_Benefit)
+# plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
+plt.hist(Info_Benefit)
 plt.show()
