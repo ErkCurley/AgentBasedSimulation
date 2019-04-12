@@ -21,9 +21,10 @@ model = Community(number_of_agents,topics)
 for i in range(number_of_days):
     model.step()
 
-#     # Store the results
-#     for agent in model.schedule.agents:
-#         all_wealth.append(agent.wealth)
+    # Store the results
+    Info_Benefit = []
+    for agent in model.schedule.agents:
+        Info_Benefit.append(agent.InfoB_access)
 
-# plt.hist(all_wealth, bins=range(max(all_wealth)+1))
-# plt.show()
+plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
+plt.show()
