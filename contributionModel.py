@@ -31,7 +31,6 @@ class GroupMember(Agent):
         self.topic_interests = []
         for x in range(0,random.randrange(1,9)):
             self.topic_interests.append(random.choice(potential_topics))
-        print(self.topic_interests)
 
     def step(self):
         # The agent's step will go here.
@@ -53,11 +52,10 @@ class Community(Model):
     def __init__(self, N, topics):
         self.schedule = RandomActivation(self)
 
-
         # Group was initialied with 30 members
-        self.num_agents = 30
+        self.num_agents = N
         # Group is initialized with 30 messages
-        self.totalMessages = 30
+        self.totalMessages = 100
         self.messages = []
 
         for x in range(self.totalMessages):
@@ -69,11 +67,23 @@ class Community(Model):
             a = GroupMember(i, self)
             self.schedule.add(a)
 
-            for x in self.messages:
-                if x.topic in a.topic_interests:
-                    a.InfoB_access = a.InfoB_access + 1
-                # a.InfoB_access = a.InfoB_access + .1
+
+        
 
     def step(self):
         '''Advance the model by one step.'''
+        for a in self.schedule.agents:
+            countG = 0
+            countB = 0
+            for x in self.messages:
+                countB = countB + 1
+                a.InfoB_access = a.InfoB_access - .1
+                if x.topic in a.topic_interests:
+                    countG = countG + 1
+                    a.InfoB_access = a.InfoB_access + 1
+                else:
+                    a.InfoB_access = a.InfoB_access - .5
+
+            print(int(a.InfoB_access))
+
         self.schedule.step()
