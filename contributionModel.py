@@ -28,8 +28,14 @@ class GroupMember(Agent):
         #  Intrninsic Benefit of Reputation
         self.IntrinsicB_reputation = 0
 
+        self.topic_interests = []
+        for x in range(0,random.randrange(1,9)):
+            self.topic_interests.append(random.choice(potential_topics))
+        print(self.topic_interests)
+
     def step(self):
         # The agent's step will go here.
+        # print(self.InfoB_access)
 
         # If any of the agent benefits are greater than 3 contribution behavior and benefits from sharing increased.
         if self.SocialB_identity > 3 or self.SocailB_bond > 3 or self.IntrinsicB_recreation > 3:
@@ -62,6 +68,11 @@ class Community(Model):
         for i in range(self.num_agents):
             a = GroupMember(i, self)
             self.schedule.add(a)
+
+            for x in self.messages:
+                if x.topic in self.topics:
+                    a.InfoB_access = a.InfoB_access + .9
+                a.InfoB_access = a.InfoB_access + .1
 
     def step(self):
         '''Advance the model by one step.'''
