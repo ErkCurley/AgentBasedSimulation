@@ -70,7 +70,7 @@ class Community(Model):
             self.schedule.add(a)
 
             for x in self.messages:
-                if x.topic in self.topics:
+                if x.topic in a.topic_interests:
                     a.InfoB_access = a.InfoB_access + 1
                 # a.InfoB_access = a.InfoB_access + .1
 
