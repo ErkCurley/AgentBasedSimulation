@@ -71,8 +71,8 @@ class Community(Model):
 
             for x in self.messages:
                 if x.topic in self.topics:
-                    a.InfoB_access = a.InfoB_access + .9
-                a.InfoB_access = a.InfoB_access + .1
+                    a.InfoB_access = a.InfoB_access + 1
+                # a.InfoB_access = a.InfoB_access + .1
 
     def step(self):
         '''Advance the model by one step.'''
