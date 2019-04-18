@@ -11,13 +11,16 @@ number_of_agents = 10
 number_of_days = 1  #365
 
 # This is the number of topics that will be included in this group
-number_of_topics = 3
-topics = []
+# number_of_topics = 3
+# topics = []
 
-# Pick x random topics for the list of potential topics
-for i in range(number_of_topics):
-    topics.append(random.choice(potential_topics))
+# # Pick x random topics for the list of potential topics
+# for i in range(number_of_topics):
+#     topics.append(random.choice(potential_topics))
 
+
+topics = ["A","B","C"]
+# Create a Community with a number of members and a set of topics
 model = Community(number_of_agents,topics)
 for i in range(number_of_days):
     model.step()
@@ -28,7 +31,6 @@ for agent in model.schedule.agents:
     InfoB_access = int(agent.InfoB_access)
     Info_Benefit.append(InfoB_access)
 
-print(Info_Benefit)
 # plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
 plt.hist(Info_Benefit)
 plt.show()
