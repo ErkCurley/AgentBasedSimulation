@@ -11,17 +11,9 @@ class GroupMember(Agent):
         super().__init__(unique_id, model)
 
         # Benefit from Information Access
-        self.InfoB_access = 0
-
-        # Benefit from Information Sharing
-        self.InfoB_share = 0
+        self.InfoB = 0
 
         self.topic_interests = []
-
-        # # Random Numnber of interests
-        # for x in range(0,random.randrange(1,9)):
-        #     # Assign Random Interests to contributors
-        #     self.topic_interests.append(random.choice(potential_topics))
 
     # def step(self):
     #     # If any of the agent benefits are greater than 3 contribution behavior and benefits from sharing increased.
@@ -69,10 +61,10 @@ class Community(Model):
             for x in self.messages:
 
                 # Remove some benefit of information access for every message read
-                a.InfoB_access = a.InfoB_access - .1
+                a.InfoB = a.InfoB - .1
 
                 if x.topic in a.topic_interests:
                     # Gain some benefit for reading messages that match what you want to read
-                    a.InfoB_access = a.InfoB_access + 1
+                    a.InfoB = a.InfoB + 1
 
         self.schedule.step()
