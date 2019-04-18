@@ -72,13 +72,19 @@ class Community(Model):
 
     def step(self):
         '''Advance the model by one step.'''
+
+        # Look over all the agents
         for a in self.schedule.agents:
+
+            # Each agent looks at all the messages in the group
             for x in self.messages:
+
+                # Remove some benefit of information access for every message read
                 a.InfoB_access = a.InfoB_access - .1
+
                 if x.topic in a.topic_interests:
+                    # Gain some benefit for reading messages that match what you want to read
                     a.InfoB_access = a.InfoB_access + 1
-                else:
-                    a.InfoB_access = a.InfoB_access - .5
 
         print(a.InfoB_access)
         self.schedule.step()
