@@ -16,30 +16,18 @@ class GroupMember(Agent):
         # Benefit from Information Sharing
         self.InfoB_share = 0
 
-        # Benefit from Social Identity
-        self.SocialB_identity = 0
-
-        # Benefit from Social Bonding
-        self.SocailB_bond = 0
-
-        # Intrinsic Benefit of Recreation
-        self.IntrinsicB_recreation = 0
-
-        #  Intrninsic Benefit of Reputation
-        self.IntrinsicB_reputation = 0
-
         self.topic_interests = []
-        for x in range(0,random.randrange(1,9)):
-            self.topic_interests.append(random.choice(potential_topics))
 
-    def step(self):
-        # The agent's step will go here.
-        # print(self.InfoB_access)
+        # # Random Numnber of interests
+        # for x in range(0,random.randrange(1,9)):
+        #     # Assign Random Interests to contributors
+        #     self.topic_interests.append(random.choice(potential_topics))
 
-        # If any of the agent benefits are greater than 3 contribution behavior and benefits from sharing increased.
-        if self.SocialB_identity > 3 or self.SocailB_bond > 3 or self.IntrinsicB_recreation > 3:
-            # if Community.total_messages < 100:
-            print("Increase information sharing benefit")
+    # def step(self):
+    #     # If any of the agent benefits are greater than 3 contribution behavior and benefits from sharing increased.
+    #     if self.SocialB_identity > 3 or self.SocailB_bond > 3 or self.IntrinsicB_recreation > 3:
+    #         # if Community.total_messages < 100:
+    #         print("Increase information sharing benefit")
 
 class Message():
     def __init__(self,topic):
@@ -55,12 +43,13 @@ class Community(Model):
         # Group was initialied with 30 members
         self.num_agents = N
         # Group is initialized with 30 messages
-        self.totalMessages = 100
+        self.totalMessages = 30
         self.messages = []
 
         for x in range(self.totalMessages):
-            self.messages.append(Message(random.choice(potential_topics)))
-
+            self.messages.append(Message("A"))
+            # self.messages.append(Message(random.choice(potential_topics)))
+        
         self.topics = topics
         # Create agents
         for i in range(self.num_agents):
@@ -86,5 +75,4 @@ class Community(Model):
                     # Gain some benefit for reading messages that match what you want to read
                     a.InfoB_access = a.InfoB_access + 1
 
-        print(a.InfoB_access)
         self.schedule.step()
