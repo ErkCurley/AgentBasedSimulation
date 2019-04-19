@@ -4,6 +4,7 @@ from mesa.time import RandomActivation
 import random
 
 potential_topics = ["A","B","C","D","E","F","G","H","I"]
+random.seed(a=123)
 
 class GroupMember(Agent):
     """ An agent with fixed initial wealth."""
@@ -13,13 +14,7 @@ class GroupMember(Agent):
         # Benefit from Information Access
         self.InfoB = 0
 
-        self.topic_interests = []
-
-    # def step(self):
-    #     # If any of the agent benefits are greater than 3 contribution behavior and benefits from sharing increased.
-    #     if self.SocialB_identity > 3 or self.SocailB_bond > 3 or self.IntrinsicB_recreation > 3:
-    #         # if Community.total_messages < 100:
-    #         print("Increase information sharing benefit")
+        self.topic_interests = random.choice(potential_topics)
 
 class Message():
     def __init__(self,topic):
@@ -29,13 +24,13 @@ class Message():
 
 class Community(Model):
     """A model with some number of agents."""
-    def __init__(self, N, topics):
+    def __init__(self, N, M, topics):
         self.schedule = RandomActivation(self)
 
-        # Group was initialied with 30 members
+        # Group was initialied with n members
         self.num_agents = N
-        # Group is initialized with 30 messages
-        self.totalMessages = 30
+        # Group is initialized with m messages
+        self.totalMessages = M
         self.messages = []
 
         for x in range(self.totalMessages):
@@ -67,4 +62,5 @@ class Community(Model):
                     # Gain some benefit for reading messages that match what you want to read
                     a.InfoB = a.InfoB + 1
 
+        self.messages = []
         self.schedule.step()
