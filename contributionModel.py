@@ -14,12 +14,13 @@ class GroupMember(Agent):
         # Benefit from Information Access
         self.InfoB = 0
 
+        # Choose a random topic to be your choice
         self.topic_interests = random.choice(potential_topics)
 
 class Message():
     def __init__(self,topic):
         self.topic = topic
-
+        # print(topic)
 
 
 class Community(Model):
