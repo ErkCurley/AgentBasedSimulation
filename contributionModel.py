@@ -34,8 +34,8 @@ class Community(Model):
         self.messages = []
 
         for x in range(self.totalMessages):
-            self.messages.append(Message("A"))
-            # self.messages.append(Message(random.choice(potential_topics)))
+            # self.messages.append(Message("A"))
+            self.messages.append(Message(random.choice(potential_topics)))
         
         self.topics = topics
         # Create agents

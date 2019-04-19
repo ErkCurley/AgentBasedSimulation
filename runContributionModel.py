@@ -40,11 +40,7 @@ for i in range(number_of_days):
     averageB = totalB/number_of_agents
     averages.append(averageB)
 
-
-print(averages)
-
 plt.plot(averages)
-
 # plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
 # plt.hist(Info_Benefit)
 plt.show()
