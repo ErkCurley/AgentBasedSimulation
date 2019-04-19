@@ -63,5 +63,12 @@ class Community(Model):
                     # Gain some benefit for reading messages that match what you want to read
                     a.InfoB = a.InfoB + 1
 
+        # Delete all messages
         self.messages = []
+
+        for a in self.schedule.agents:
+            if a.InfoB > 1:
+                self.messages.append(Message(a.topic_interests))
+
+        
         self.schedule.step()
