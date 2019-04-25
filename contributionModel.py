@@ -24,13 +24,14 @@ class Message():
         # print(topic)
 
 
-def compute_interestes(model):
+def compute_benefit(model):
     b = 0
     for member in model.schedule.agents:
         b = b + member.InfoB
 
     a = b / len(model.schedule.agents)
     return a
+
 
 class Community(Model):
     """A model with some number of agents."""
@@ -54,8 +55,11 @@ class Community(Model):
             self.schedule.add(a)
         
         self.datacollector = DataCollector(
-            model_reporters = {"Average_Info_Benefit": compute_interestes}
-            )  # An agent attribute
+                model_reporters = {
+                    "Average_Info_Benefit": compute_benefit
+                    # "Messge Topics": compute_topics
+                }
+            )
 
 
         
@@ -77,13 +81,16 @@ class Community(Model):
                     a.InfoB = a.InfoB + 1
 
         # Delete all messages
-        self.messages = []
 
         for a in self.schedule.agents:
             if a.InfoB > 1:
                 self.messages.append(Message(a.topic_interests))
 
         self.datacollector.collect(self)
+        self.messages = []
+
         self.schedule.step()
+
+
 
     
