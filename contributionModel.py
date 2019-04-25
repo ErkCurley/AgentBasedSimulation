@@ -81,14 +81,14 @@ class Community(Model):
                     a.InfoB = a.InfoB + 1
 
         # Delete all messages
+        self.messages = []
 
         for a in self.schedule.agents:
             if a.InfoB > 1:
                 self.messages.append(Message(a.topic_interests))
 
-        self.datacollector.collect(self)
-        self.messages = []
 
+        self.datacollector.collect(self)
         self.schedule.step()
 
 
