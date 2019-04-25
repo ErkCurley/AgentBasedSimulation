@@ -1,5 +1,6 @@
 # model.py
 from mesa import Agent, Model
+from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
 import random
 
@@ -23,6 +24,14 @@ class Message():
         # print(topic)
 
 
+def compute_interestes(model):
+    b = 0
+    for member in model.schedule.agents:
+        b = b + member.InfoB
+
+    a = b / len(model.schedule.agents)
+    return a
+
 class Community(Model):
     """A model with some number of agents."""
     def __init__(self, N, M, topics):
@@ -43,6 +52,10 @@ class Community(Model):
         for i in range(self.num_agents):
             a = GroupMember(i, self)
             self.schedule.add(a)
+        
+        self.datacollector = DataCollector(
+            model_reporters = {"Average_Info_Benefit": compute_interestes}
+            )  # An agent attribute
 
 
         
@@ -70,5 +83,7 @@ class Community(Model):
             if a.InfoB > 1:
                 self.messages.append(Message(a.topic_interests))
 
-        
+        self.datacollector.collect(self)
         self.schedule.step()
+
+    

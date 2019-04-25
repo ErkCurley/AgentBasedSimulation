@@ -3,6 +3,8 @@ from contributionModel import *  # omit this in jupyter notebooks
 import matplotlib.pyplot as plt
 import random
 import math
+# from mesa.datacollection import DataCollector
+ 
 
 # The are the potential message topics
 potential_topics = ["A","B","C","D","E","F","G","H","I"]
@@ -31,16 +33,6 @@ averages = []
 for i in range(number_of_days):
     # Step the model
     model.step()
- 
- 
-    # Calculate the stats
-    totalB = 0
-    for agent in model.schedule.agents:
-        totalB = totalB + int(agent.InfoB)
-    averageB = totalB/number_of_agents
-    averages.append(averageB)
 
-plt.plot(averages)
-# plt.hist(Info_Benefit, bins=range(max(Info_Benefit)+1))
-# plt.hist(Info_Benefit)
+plt.plot(model.datacollector.get_model_vars_dataframe())
 plt.show()
