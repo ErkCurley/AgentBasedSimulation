@@ -49,13 +49,14 @@ for i in range(number_of_days):
 
 topic_count = []
 
-for x in t:
-    topic_count.append(x)
+# for x in t:
+#     topic_count.append = t[x]
 
 
 
 plt.plot(model.datacollector.get_model_vars_dataframe())
 plt.show()
 
-plt.plot(topic_count)
+print(t)
+plt.hist(t,bins=potential_topics)
 plt.show()
