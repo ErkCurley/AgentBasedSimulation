@@ -39,25 +39,50 @@ message_topic_count = {
     "I": 0
 }
 
+messages_on_topic = []
+agents_interested_in_group = []
+
 # Step the model for number of days
 for i in range(number_of_days):
     # Step the model
     model.step()
 
+    count_of_on_topic = 0
     for message in model.messages:
         message_topic_count[message.topic] = message_topic_count[message.topic] + 1
+        if message.topic in topics:
+            count_of_on_topic = count_of_on_topic + 1
+    messages_on_topic.append(count_of_on_topic)
 
+    count_of_agents_interested = 0
+    for a in model.schedule.agents:
+        if a.topic_interests in topics:
+            count_of_agents_interested = count_of_agents_interested + 1
+    agents_interested_in_group.append(count_of_agents_interested)
 
 message_topic_count_names = list(message_topic_count.keys())
 message_topic_count_values = list(message_topic_count.values())
 
 plt.plot(model.datacollector.get_model_vars_dataframe())
+plt.title('Info Benefit')
+plt.xlabel('Day')
+plt.ylabel('Benefit Level')
 plt.show()
 
-print(message_topic_count)
-print(potential_topics)
-# t = pd.Series(t)
-# t = pd.DataFrame.from_dict(t, orient="index")
-plt.bar(message_topic_count_names, message_topic_count_values)
+plt.plot(messages_on_topic)
+plt.title('Messages on Topic')
+plt.xlabel('Day')
+plt.ylabel('Count of Messages')
+plt.show()
 
+plt.plot(agents_interested_in_group)
+plt.title('Agents interested in Group Topic')
+plt.xlabel('Day')
+plt.ylabel('Count of Agents')
+plt.show()
+
+plt.bar(message_topic_count_names, message_topic_count_values)
+plt.title('Total Messages per Topic')
+plt.xlabel('Topic')
+plt.ylabel('Count of Messages')
 plt.show()

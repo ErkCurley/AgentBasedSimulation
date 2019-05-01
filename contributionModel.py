@@ -90,13 +90,14 @@ class Community(Model):
                 else:
                     a.InfoB = len(self.messages) / signal_to_noise
 
-        print(a.InfoB)
-
         # Delete all messages
         self.messages = []
         for a in self.schedule.agents:
             if a.InfoB > 1:
-                self.messages.append(Message(a.topic_interests))
+                new_message_topic = random.choice(a.topic_interests)
+                new_message = Message(new_message_topic)
+                self.messages.append(new_message)
+                a.InfoB = a.InfoB - 1
 
 
         self.datacollector.collect(self)
