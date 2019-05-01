@@ -1,6 +1,7 @@
 # run.py
 from contributionModel import *  # omit this in jupyter notebooks
 import matplotlib.pyplot as plt
+import pandas as pd
 import random
 import math
 # from mesa.datacollection import DataCollector
@@ -26,7 +27,7 @@ topics = ["A","B","C"]
 # Create a Community with a number of members and a set of topics
 model = Community(number_of_agents, number_of_messages, topics)
 
-t = {
+message_topic_count = {
     "A": 0,
     "B": 0,
     "C": 0,
@@ -44,16 +45,19 @@ for i in range(number_of_days):
     model.step()
 
     for message in model.messages:
-        t[message.topic] = t[message.topic] + 1
+        message_topic_count[message.topic] = message_topic_count[message.topic] + 1
 
-topic_count = []
 
-# for x in t:
-#     topic_count.append = t[x]
+message_topic_count_names = list(message_topic_count.keys())
+message_topic_count_values = list(message_topic_count.values())
 
 plt.plot(model.datacollector.get_model_vars_dataframe())
 plt.show()
 
-print(t)
-plt.hist(t, bins=potential_topics)
+print(message_topic_count)
+print(potential_topics)
+# t = pd.Series(t)
+# t = pd.DataFrame.from_dict(t, orient="index")
+plt.bar(message_topic_count_names, message_topic_count_values)
+
 plt.show()
