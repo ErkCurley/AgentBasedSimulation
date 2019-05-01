@@ -27,22 +27,21 @@ topics = ["A","B","C"]
 model = Community(number_of_agents, number_of_messages, topics)
 
 t = {
-    "A":0,
-    "B":0,
-    "C":0,
-    "D":0,
-    "E":0,
-    "F":0,
-    "G":0,
-    "H":0,
-    "I":0
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "F": 0,
+    "G": 0,
+    "H": 0,
+    "I": 0
 }
 
 # Step the model for number of days
 for i in range(number_of_days):
     # Step the model
     model.step()
-
 
     for message in model.messages:
         t[message.topic] = t[message.topic] + 1
@@ -52,11 +51,9 @@ topic_count = []
 # for x in t:
 #     topic_count.append = t[x]
 
-
-
 plt.plot(model.datacollector.get_model_vars_dataframe())
 plt.show()
 
 print(t)
-plt.hist(t,bins=potential_topics)
+plt.hist(t, bins=potential_topics)
 plt.show()
