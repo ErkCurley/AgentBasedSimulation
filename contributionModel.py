@@ -71,18 +71,29 @@ class Community(Model):
         for a in self.schedule.agents:
 
             # Each agent looks at all the messages in the group
-            for x in self.messages:
+            count_of_interest = 0
+            if len(self.messages) > 0:
+                for x in self.messages:
+                    if x.topic in a.topic_interests:
+                        count_of_interest = count_of_interest + 1
 
-                # Remove some benefit of information access for every message read
-                a.InfoB = a.InfoB - .1
+                # The cost is the proportion of messages that were read divided by the signal to noise ratio
 
-                if x.topic in a.topic_interests:
-                    # Gain some benefit for reading messages that match what you want to read
-                    a.InfoB = a.InfoB + 1
+                not_interesting = len(self.messages) - count_of_interest
+                if not_interesting == 0:
+                    signal_to_noise = 0
+                else:
+                    signal_to_noise = count_of_interest/not_interesting
+
+                if signal_to_noise == 0:
+                    a.InfoB = 0
+                else:
+                    a.InfoB = len(self.messages) / signal_to_noise
+
+        print(a.InfoB)
 
         # Delete all messages
         self.messages = []
-
         for a in self.schedule.agents:
             if a.InfoB > 1:
                 self.messages.append(Message(a.topic_interests))
