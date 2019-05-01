@@ -13,7 +13,7 @@ class GroupMember(Agent):
         super().__init__(unique_id, model)
 
         # Benefit from Information Access
-        self.InfoB = 0
+        self.InfoB = 10
 
         # Choose a random topic to be your choice
         self.topic_interests = random.choice(potential_topics)
@@ -99,6 +99,13 @@ class Community(Model):
                 self.messages.append(new_message)
                 a.InfoB = a.InfoB - 1
 
+        if len(self.schedule.agents) < 25:
+            a = GroupMember(len(self.schedule.agents) + 1, self)
+            self.schedule.add(a)
+
+        for a in self.schedule.agents:
+            if a.InfoB < 1:
+                self.schedule.remove(a)
 
         self.datacollector.collect(self)
         self.schedule.step()

@@ -40,6 +40,7 @@ message_topic_count = {
 }
 
 messages_on_topic = []
+agents_in_group = []
 agents_interested_in_group = []
 
 # Step the model for number of days
@@ -53,6 +54,8 @@ for i in range(number_of_days):
         if message.topic in topics:
             count_of_on_topic = count_of_on_topic + 1
     messages_on_topic.append(count_of_on_topic)
+
+    agents_in_group.append(len(model.schedule.agents))
 
     count_of_agents_interested = 0
     for a in model.schedule.agents:
@@ -77,6 +80,12 @@ plt.show()
 
 plt.plot(agents_interested_in_group)
 plt.title('Agents interested in Group Topic')
+plt.xlabel('Day')
+plt.ylabel('Count of Agents')
+plt.show()
+
+plt.plot(agents_in_group)
+plt.title('Agents in Group')
 plt.xlabel('Day')
 plt.ylabel('Count of Agents')
 plt.show()
