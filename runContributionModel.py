@@ -10,8 +10,8 @@ import math
 # The are the potential message topics
 potential_topics = ["A","B","C","D","E","F","G","H","I"]
 
-number_of_agents = 10
-number_of_messages = 30
+number_of_agents = 30
+number_of_messages = 100
 number_of_days = 365
 
 # This is the number of topics that will be included in this group
@@ -42,6 +42,7 @@ message_topic_count = {
 messages_on_topic = []
 agents_in_group = []
 agents_interested_in_group = []
+total_messages = []
 
 # Step the model for number of days
 for i in range(number_of_days):
@@ -53,10 +54,10 @@ for i in range(number_of_days):
         message_topic_count[message.topic] = message_topic_count[message.topic] + 1
         if message.topic in topics:
             count_of_on_topic = count_of_on_topic + 1
+    total_messages.append(len(model.messages))
     messages_on_topic.append(count_of_on_topic)
 
     agents_in_group.append(len(model.schedule.agents))
-
     count_of_agents_interested = 0
     for a in model.schedule.agents:
         if a.topic_interests in topics:
@@ -72,22 +73,20 @@ plt.xlabel('Day')
 plt.ylabel('Benefit Level')
 plt.show()
 
-plt.plot(messages_on_topic)
+plt.plot(total_messages, label='Total')
+plt.plot(messages_on_topic, label='On Topic')
 plt.title('Messages on Topic')
 plt.xlabel('Day')
 plt.ylabel('Count of Messages')
+plt.legend()
 plt.show()
 
-plt.plot(agents_interested_in_group)
-plt.title('Agents interested in Group Topic')
-plt.xlabel('Day')
-plt.ylabel('Count of Agents')
-plt.show()
-
-plt.plot(agents_in_group)
+plt.plot(agents_in_group, label='Total')
+plt.plot(agents_interested_in_group, label='Interested')
 plt.title('Agents in Group')
 plt.xlabel('Day')
 plt.ylabel('Count of Agents')
+plt.legend()
 plt.show()
 
 plt.bar(message_topic_count_names, message_topic_count_values)

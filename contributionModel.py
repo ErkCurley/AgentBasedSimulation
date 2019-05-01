@@ -7,6 +7,7 @@ import random
 potential_topics = ["A","B","C","D","E","F","G","H","I"]
 random.seed(a=123)
 
+
 class GroupMember(Agent):
     """ An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
@@ -18,8 +19,9 @@ class GroupMember(Agent):
         # Choose a random topic to be your choice
         self.topic_interests = random.choice(potential_topics)
 
-class Message():
-    def __init__(self,topic):
+
+class Message:
+    def __init__(self, topic):
         self.topic = topic
         # print(topic)
 
@@ -28,6 +30,9 @@ def compute_benefit(model):
     b = 0
     for member in model.schedule.agents:
         b = b + member.InfoB
+
+    if len(model.schedule.agents) == 0:
+        return 0
 
     a = b / len(model.schedule.agents)
     return a
@@ -61,34 +66,37 @@ class Community(Model):
                 }
             )
 
-
-        
-
     def step(self):
-        '''Advance the model by one step.'''
-
         # Look over all the agents
         for a in self.schedule.agents:
 
-            # Each agent looks at all the messages in the group
+            # Calculate the cost to read messages
             count_of_interest = 0
             if len(self.messages) > 0:
                 for x in self.messages:
                     if x.topic in a.topic_interests:
                         count_of_interest = count_of_interest + 1
 
+                        # This is my best shot at a marginal function
+                        # In this case each message that matches interest will provide 1 / X benefit
+                        a.InfoB = a.InfoB + 1 / count_of_interest
+
                 # The cost is the proportion of messages that were read divided by the signal to noise ratio
 
                 not_interesting = len(self.messages) - count_of_interest
+
                 if not_interesting == 0:
-                    signal_to_noise = 0
+                    signal_to_noise = 1
                 else:
                     signal_to_noise = count_of_interest/not_interesting
 
+                # If signal to noise is 0, all of the messages were not interesting
                 if signal_to_noise == 0:
-                    a.InfoB = 0
+                    # If nothing was interesting remove half of your benefit
+                    a.InfoB = a.InfoB / 2
                 else:
-                    a.InfoB = len(self.messages) / signal_to_noise
+                    cost = len(self.messages) / signal_to_noise
+                    a.InfoB = a.InfoB - cost
 
         # Delete all messages
         self.messages = []
@@ -109,7 +117,3 @@ class Community(Model):
 
         self.datacollector.collect(self)
         self.schedule.step()
-
-
-
-    
