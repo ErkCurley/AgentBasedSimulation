@@ -4,8 +4,9 @@ from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
 import random
 
-potential_topics = ["A","B","C","D","E","F","G","H","I"]
+potential_topics = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
 random.seed(a=123)
+unique_id = 0
 
 
 class GroupMember(Agent):
@@ -15,7 +16,7 @@ class GroupMember(Agent):
 
         # Benefit from Information Access
         self.InfoB = 10
-
+        self.unique_id = unique_id
         # Choose a random topic to be your choice
         self.topic_interests = random.choice(potential_topics)
 
@@ -41,6 +42,7 @@ def compute_benefit(model):
 class Community(Model):
     """A model with some number of agents."""
     def __init__(self, N, M, topics):
+        global unique_id
         self.schedule = RandomActivation(self)
 
         # Group was initialied with n members
@@ -56,6 +58,7 @@ class Community(Model):
         self.topics = topics
         # Create agents
         for i in range(self.num_agents):
+            unique_id = i
             a = GroupMember(i, self)
             self.schedule.add(a)
         
@@ -108,7 +111,8 @@ class Community(Model):
                 a.InfoB = a.InfoB - 1
 
         if len(self.schedule.agents) < 25:
-            a = GroupMember(len(self.schedule.agents) + 1, self)
+            a = GroupMember(unique_id + 1, self)
+            unique_id = unique_id + 1
             self.schedule.add(a)
 
         for a in self.schedule.agents:
