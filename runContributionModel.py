@@ -101,6 +101,7 @@ plt.show()
 
 plt.plot(agents_in_group, label='Total')
 plt.plot(agents_interested_in_group, label='Interested')
+# plt.plot(model.datacollector.get_model_vars_dataframe()['Count_of_Members_Left'], label="Left")
 plt.title('Agents in Group')
 plt.xlabel('Day')
 plt.ylabel('Count of Agents')

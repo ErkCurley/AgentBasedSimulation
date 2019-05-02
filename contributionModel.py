@@ -39,6 +39,14 @@ def compute_benefit(model):
     return a
 
 
+def compute_member_joined(model):
+    return model.member_joined
+
+
+def compute_member_left(model):
+    return model.member_left
+
+
 class Community(Model):
     """A model with some number of agents."""
     def __init__(self, N, M, topics):
@@ -50,6 +58,8 @@ class Community(Model):
         # Group is initialized with m messages
         self.totalMessages = M
         self.messages = []
+        self.member_joined = 0
+        self.member_left = 0
 
         for x in range(self.totalMessages):
             # self.messages.append(Message("A"))
@@ -64,7 +74,10 @@ class Community(Model):
         
         self.datacollector = DataCollector(
                 model_reporters = {
-                    "Average_Info_Benefit": compute_benefit
+                    "Average_Info_Benefit": compute_benefit,
+                    "Count_of_Members_Joined": compute_member_joined,
+                    "Count_of_Members_Left": compute_member_left
+
                     # "Messge Topics": compute_topics
                 }
             )
@@ -74,7 +87,6 @@ class Community(Model):
         for a in self.schedule.agents:
 
             # Calculate the cost to read messages
-            count_of_interest = 0
             if len(self.messages) > 0:
                 for x in self.messages:
                     if x.topic in a.topic_interests:
