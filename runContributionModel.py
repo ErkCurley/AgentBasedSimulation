@@ -82,10 +82,15 @@ for i in range(number_of_days):
             count_of_agents_interested = count_of_agents_interested + 1
     agents_interested_in_group.append(count_of_agents_interested)
 
+    model.post()
+
 message_topic_count_names = list(message_topic_count.keys())
 message_topic_count_values = list(message_topic_count.values())
 
-plt.plot(model.datacollector.get_model_vars_dataframe())
+initial_messages_names = list(initial_messages.keys())
+initial_messages_values = list(initial_messages.values())
+
+plt.plot(model.datacollector.get_model_vars_dataframe()['Average_Info_Benefit'])
 plt.title('Info Benefit')
 plt.xlabel('Day')
 plt.ylabel('Benefit Level')
@@ -106,6 +111,12 @@ plt.title('Agents in Group')
 plt.xlabel('Day')
 plt.ylabel('Count of Agents')
 plt.legend()
+plt.show()
+
+plt.bar(initial_messages_names, initial_messages_values)
+plt.title('Initial Messages per Topic')
+plt.xlabel('Topic')
+plt.ylabel('Count of Messages')
 plt.show()
 
 plt.bar(message_topic_count_names, message_topic_count_values)

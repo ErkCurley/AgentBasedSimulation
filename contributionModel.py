@@ -63,8 +63,8 @@ class Community(Model):
 
         for x in range(self.totalMessages):
             # self.messages.append(Message("A"))
-            self.messages.append(Message(random.choice(potential_topics)))
-        
+            self.messages.append(Message(random.choice(topics)))
+
         self.topics = topics
         # Create agents
         for i in range(self.num_agents):
@@ -88,48 +88,65 @@ class Community(Model):
 
             # Calculate the cost to read messages
             if len(self.messages) > 0:
+                count_of_interest = 0
                 for x in self.messages:
                     if x.topic in a.topic_interests:
                         count_of_interest = count_of_interest + 1
 
-                        # This is my best shot at a marginal function
-                        # In this case each message that matches interest will provide 1 / X benefit
-                        a.InfoB = a.InfoB + 1 / count_of_interest
-
-                # The cost is the proportion of messages that were read divided by the signal to noise ratio
-
-                not_interesting = len(self.messages) - count_of_interest
-
-                if not_interesting == 0:
-                    signal_to_noise = 1
+                # Calculate reading benefit: 1 while < 40 | 1/x while above 40
+                if count_of_interest < 40:
+                    a.InfoB = a.InfoB + count_of_interest
                 else:
-                    signal_to_noise = count_of_interest/not_interesting
+                    a.InfoB = a.InfoB + 40
+                    for j in range(1, count_of_interest % 40):
+                        a.InfoB = a.InfoB + 1 / j
 
-                # If signal to noise is 0, all of the messages were not interesting
-                if signal_to_noise == 0:
-                    # If nothing was interesting remove half of your benefit
-                    a.InfoB = a.InfoB / 2
-                else:
-                    cost = len(self.messages) / signal_to_noise
-                    a.InfoB = a.InfoB - cost
+                # The cost is the proportion of irrelevant messages
+                cost = 1 - (count_of_interest / len(self.messages))
+                a.InfoB = a.InfoB - (a.InfoB * cost)
 
-        # Delete all messages
+                # not_interesting = len(self.messages) - count_of_interest
+                #
+                # if not_interesting == 0:
+                #     signal_to_noise = 1
+                # else:
+                #     signal_to_noise = count_of_interest / not_interesting
+                #
+                #
+                # # If signal to noise is 0, all of the messages were not interesting
+                # if signal_to_noise == 0:
+                #     # If nothing was interesting remove half of your benefit
+                #     a.InfoB = a.InfoB / 2
+                # else:
+                #     cost = len(self.messages) / signal_to_noise
+                #     print(len(self.messages))
+                #     a.InfoB = a.InfoB - cost
+
+    def post(self):
+        global unique_id
         self.messages = []
         for a in self.schedule.agents:
-            if a.InfoB > 1:
+            if a.InfoB >= 1:
                 new_message_topic = random.choice(a.topic_interests)
                 new_message = Message(new_message_topic)
                 self.messages.append(new_message)
-                a.InfoB = a.InfoB - 1
+                # a.InfoB = a.InfoB - .1 * a.InfoB
 
         if len(self.schedule.agents) < 25:
             a = GroupMember(unique_id + 1, self)
             unique_id = unique_id + 1
             self.schedule.add(a)
+            self.member_joined = self.member_joined + 1
 
         for a in self.schedule.agents:
             if a.InfoB < 1:
                 self.schedule.remove(a)
+                self.member_left = self.member_left + 1
+
+        Agents = []
+        for a in self.schedule.agents:
+            Agents.append(a.topic_interests)
+        print(Agents)
 
         self.datacollector.collect(self)
         self.schedule.step()
